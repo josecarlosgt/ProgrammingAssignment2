@@ -2,7 +2,7 @@
 title: "cachematrix"
 author: "Jose Carlos Arriola"
 date: "14 February 2016"
-output: pdf_document
+output: html_document
 ---
 
 **Lexical Scoping**
@@ -54,8 +54,34 @@ Testing
 ```{r}
 my_matrix <- makeCacheMatrix(matrix(1:4, 2, 2))
 my_matrix$get()
-my_matrix$getInverse()
-
-cacheSolve(my_matrix)
-my_matrix$getInverse()
 ```
+>    [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+
+```{r}
+my_matrix$getinv()
+```
+> NULL
+
+```{r}
+cacheSolve(my_matrix)
+```
+>     [,1] [,2]
+[1,]   -2  1.5
+[2,]    1 -0.5
+
+```{r}
+cacheSolve(my_matrix)
+```
+> Getting cached data ...
+     [,1] [,2]
+[1,]   -2  1.5
+[2,]    1 -0.5
+
+```{r}
+my_matrix$getinv()
+```
+>     [,1] [,2]
+[1,]   -2  1.5
+[2,]    1 -0.5
