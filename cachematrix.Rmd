@@ -2,6 +2,7 @@
 title: "cachematrix"
 author: "Jose Carlos Arriola"
 date: "14 February 2016"
+css: cachematrix.css
 output: html_document
 ---
 
