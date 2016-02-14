@@ -5,7 +5,7 @@ date: "14 February 2016"
 output: html_document
 ---
 
-Lexical Scoping
+Lexical Scoping - My Solution
 ===============
 
 Matrix inversion is usually a costly computation and there may be some benefit to caching the inverse of a matrix rather than compute it repeatedly (there are also alternatives to matrix inversion that we will not discuss here). In this assignment a pair of functions are implemented that cache the inverse of a matrix: makeCacheMatrix and cacheSolve.
