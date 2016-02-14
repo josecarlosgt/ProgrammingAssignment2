@@ -2,21 +2,60 @@
 title: "cachematrix"
 author: "Jose Carlos Arriola"
 date: "14 February 2016"
-output: html_document
+output: pdf_document
 ---
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+**Lexical Scoping**
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Matrix inversion is usually a costly computation and there may be some benefit to caching the inverse of a matrix rather than compute it repeatedly (there are also alternatives to matrix inversion that we will not discuss here). In this assignment a pair of functions are implemented that cache the inverse of a matrix.
+
+makeCacheMatrix creates a special "matrix", which is really a list containing a function to
+
+1. set the value of the matrix
+2. get the value of the matrix
+3. set the value of the inverse matrix
+4. get the value of the inverse matrix
 
 ```{r}
-summary(cars)
+makeCacheMatrix <- function(x = matrix()) {
+  inv <- NULL
+  set <- function(y) {
+    x <<- y
+    inv <<- NULL
+  }
+  get <- function() x
+  setinv <- function(i) inv <<- i
+  getinv <- function() inv
+  list(set = set, get = get,
+       setinv = setinv,
+       getinv = getinv)
+}
 ```
 
-You can also embed plots, for example:
+cacheSolve computes the inverse of the special "matrix" returned by makeCacheMatrix above. If the inverse has already been calculated (and the matrix has not changed), then the cachesolve should retrieve the inverse from the cache.
 
-```{r, echo=FALSE}
-plot(cars)
+```{r}
+cacheSolve <- function(x, ...) {
+  ## Return a matrix that is the inverse of 'x'
+  i <- x$getinv()
+  if(!is.null(i)) {
+    message("Getting cached data ...")
+    return(i)
+  }
+  data <- x$get()
+  i <- solve(data, ...)
+  x$setinv(i)
+  i
+}
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Testing
+
+```{r}
+my_matrix <- makeCacheMatrix(matrix(1:4, 2, 2))
+my_matrix$get()
+my_matrix$getInverse()
+
+cacheSolve(my_matrix)
+my_matrix$getInverse()
+```
